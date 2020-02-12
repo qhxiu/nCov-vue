@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <n-header></n-header>
+    <!-- <n-header></n-header> -->
     <router-view/>
   </div>
 </template>

@@ -9,21 +9,23 @@ import echarts from "echarts";
 export default {
   name: 'Line',
   mounted() {
+    console.log(this.$store.state.map.addXAxis)
     this.chartConfig();
   },
+  created() {
+    console.log(this.$store.state.map.addXAxis)
+  },
+  watch: {
+    '$store.state.map.addXAxis': {
+      handler(newVal, oldVal){
+        this.chartConfig();
+      },
+    }
+  },
   methods: {
-    chartConfig() {
+    chartConfig(addXAxis) {
       let lineChart = echarts.init(this.$refs.myLine);
       lineChart.setOption({
-        // title: {
-        //   text: "疫情新增趋势"
-        // },
-        tooltip: {
-          // trigger: "axis"
-        },
-        // legend: {
-          // data: ["邮件营销", "联盟广告", "视频广告", "直接访问", "搜索引擎"]
-        // },
         grid: {
           left: "3%",
           right: "4%",
@@ -32,13 +34,13 @@ export default {
         },
         toolbox: {
           feature: {
-            saveAsImage: {}
+            // saveAsImage: {}
           }
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          data: [0].concat(this.$store.state.map.addXAxis)
         },
         yAxis: {
           type: "value"
@@ -48,13 +50,13 @@ export default {
             name: "新增确诊",
             type: "line",
             stack: "总量",
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: [0].concat(this.$store.state.map.addConfirm)
           },
           {
             name: "新增疑似",
             type: "line",
             stack: "总量",
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: [0].concat(this.$store.state.map.addSuspect)
           }
         ]
       });

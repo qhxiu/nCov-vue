@@ -7,24 +7,24 @@
       </div>
       <div class="cards">
         <div class="card confirm">
-          <div class="add">较上日<span>+5111</span></div>
-          <div class="num">17777</div>
+          <div class="add">较上日<span>{{$store.state.map.chinaAdd.confirm > 0 ? '+'+ $store.state.map.chinaAdd.confirm : $store.state.map.chinaAdd.confirm}}</span></div>
+          <div class="num">{{$store.state.map.chinaTotal.confirm || 0}}</div>
           <div class="text">全国确诊</div>
         </div>
         <div class="card suspect">
-          <div class="add">较上日<span>+5</span></div>
-          <div class="num">17777</div>
-          <div class="text">全国确诊</div>
+          <div class="add">较上日<span>{{$store.state.map.chinaAdd.suspect > 0 ? '+'+ $store.state.map.chinaAdd.suspect : $store.state.map.chinaAdd.suspect}}</span></div>
+          <div class="num">{{$store.state.map.chinaTotal.suspect || 0}}</div>
+          <div class="text">疑似病例</div>
         </div>
         <div class="card heal">
-          <div class="add">较上日<span>+5</span></div>
-          <div class="num">17777</div>
-          <div class="text">全国确诊</div>
+          <div class="add">较上日<span>{{$store.state.map.chinaAdd.heal > 0 ? '+'+ $store.state.map.chinaAdd.heal : $store.state.map.chinaAdd.heal}}</span></div>
+          <div class="num">{{$store.state.map.chinaTotal.heal || 0}}</div>
+          <div class="text">治愈人数</div>
         </div>
         <div class="card dead">
-          <div class="add">较上日<span>+5</span></div>
-          <div class="num">17777</div>
-          <div class="text">全国确诊</div>
+          <div class="add">较上日<span>{{$store.state.map.chinaAdd.dead > 0 ? '+'+ $store.state.map.chinaAdd.dead : $store.state.map.chinaAdd.dead}}</span></div>
+          <div class="num">{{$store.state.map.chinaTotal.dead || 0}}</div>
+          <div class="text">死亡人数</div>
         </div>
       </div>
     </div>
@@ -47,9 +47,7 @@ export default {
     NTable
   },
   created() {
-    axios.get('https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5').then(res => {
-      console.log(res);
-    })
+    this.$store.dispatch('getMapData')
   }
 };
 </script>
