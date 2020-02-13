@@ -7,9 +7,9 @@
       <li>治愈</li>
       <li>死亡</li>
     </ul>
-    <ul class="table-content" v-if="$store.state.map.areaTree.length > 0">
+    <ul class="table-content" v-if="$store.state.map.areaTree">
       <li
-        v-for="(item, i) in $store.state.map.areaTree[0].children"
+        v-for="(item, i) in $store.state.map.areaTree.children"
         :key="item.name"
         class="item"
         @click="handleClick(i)"
@@ -21,10 +21,9 @@
           <div>{{ item.total.heal }}</div>
           <div>{{ item.total.dead }}</div>
         </div>
-        <ul class="table-expand">
+        <ul class="table-expand" :id="i" style="display: none">
           <li
-            v-for="(child, index) in item.children"
-            v-if="index < item.children.length - 1"
+            v-for="(child) in item.children"
             :key="child.name"
           >
             <div>{{ child.name }}</div>
@@ -41,13 +40,23 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isExpand: "none"
+    };
+  },
   props: {
     province: Array
   },
   methods: {
     handleClick(i) {
-      console.log(e.target.parentNode)
-      const dom = document.getElementsByClassName("")
+      const expand = document.getElementById(i);
+      const attr = expand.getAttribute("style");
+      if (/none/.test(attr)) {
+        expand.style.display = "block";
+      } else {
+        expand.style.display = "none";
+      }
     }
   }
 };
@@ -83,7 +92,7 @@ li {
   text-align: center;
 }
 .table-expand-hide {
-  display: none
+  display: none;
 }
 .province {
   padding: 5px 0;

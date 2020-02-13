@@ -1,4 +1,9 @@
 import getData from "../service/data.js";
+import pinyin from "pinyin";
+
+function isPosition(num) {
+  return num >= 0 ? "+" + num : num;
+}
 
 export default {
   state: {
@@ -7,41 +12,49 @@ export default {
     chinaTotal: {},
     dayAdd: [],
     dayList: [],
-    mapData: [],
-    addXAxis: [1,2,3],
+    addXAxis: [],
     addConfirm: [],
-    addSuspect: []
+    addSuspect: [],
+    lastUpdateTime: null,
+    province: [],
+    // 新数据
+    statistics: {},
+    mapData: []
   },
   mutations: {
     setMapData(state, status) {
       const {
         areaTree,
-        mapData,
-        chinaAdd,
-        chinaTotal,
-        dayAdd,
-        dayList,
         addXAxis,
         addConfirm,
-        addSuspect
+        addSuspect,
+        lastUpdateTime
       } = status;
       state.areaTree = areaTree;
-      state.mapData = mapData;
-      state.chinaAdd = chinaAdd;
-      state.chinaTotal = chinaTotal;
-      state.dayList = dayList;
+      const { total, today } = areaTree;
+      state.lastUpdateTime = lastUpdateTime;
       state.addXAxis = addXAxis;
-      console.log(state);
       state.addConfirm = addConfirm;
       state.addSuspect = addSuspect;
-      
+      state.statistics = {
+        confirm: total.confirm,
+        addConfirm: isPosition(today.confirm),
+        suspect: total.suspect,
+        addSuspect: isPosition(today.suspect),
+        heal: total.heal,
+        addHeal: isPosition(today.heal),
+        dead: total.dead,
+        addDead: isPosition(today.dead)
+      };
+      state.mapData = areaTree.children.map(child => {
+        return { name: child.name, value: child.total.confirm };
+      });
     }
   },
   actions: {
-    getMapData({ commit }) {
-      getData().then(res => {
+    getMapData({ commit }, province) {
+      getData(province).then(res => {
         commit("setMapData", res);
-        console.log(res);
       });
     }
   }

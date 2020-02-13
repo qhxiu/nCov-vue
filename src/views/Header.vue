@@ -10,7 +10,6 @@
 export default {
   name: 'Header',
   created() {
-    console.log(1);
   }
 }
 </script>
